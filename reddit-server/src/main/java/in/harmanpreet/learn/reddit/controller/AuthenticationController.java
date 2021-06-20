@@ -1,5 +1,7 @@
 package in.harmanpreet.learn.reddit.controller;
 
+import in.harmanpreet.learn.reddit.dto.AuthenticationResponse;
+import in.harmanpreet.learn.reddit.dto.LoginRequest;
 import in.harmanpreet.learn.reddit.dto.RegisterRequest;
 import in.harmanpreet.learn.reddit.service.AuthService;
 import lombok.AllArgsConstructor;
@@ -13,6 +15,7 @@ import static org.springframework.http.HttpStatus.OK;
 @AllArgsConstructor
 public class AuthenticationController {
 
+
     private final AuthService authService;
 
     @PostMapping("/signup")
@@ -25,5 +28,10 @@ public class AuthenticationController {
     public ResponseEntity activateAccount(@PathVariable String token) {
         authService.activateAccount(token);
         return new ResponseEntity<>("User account activated successfully.", OK);
+    }
+
+    @PostMapping("/login")
+    public AuthenticationResponse login(@RequestBody LoginRequest loginRequest) {
+        return authService.login(loginRequest);
     }
 }
