@@ -21,7 +21,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class Post {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    private Long postId;
 
     @NotBlank(message = "Post name cannot be empty")
     private String name;

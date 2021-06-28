@@ -1,0 +1,6 @@
+package in.harmanpreet.learn.reddit.exception;
+
+public class PostNotFoundException extends RuntimeException {
+    public PostNotFoundException(String message) {
+    }
+}
