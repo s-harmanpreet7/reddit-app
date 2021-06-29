@@ -1,8 +1,9 @@
 package in.harmanpreet.learn.reddit.service;
 
+import in.harmanpreet.learn.reddit.enums.MailTemplate;
 import in.harmanpreet.learn.reddit.exception.RedditException;
 import in.harmanpreet.learn.reddit.model.NotificationEmail;
-import in.harmanpreet.learn.reddit.util.VerificationMailContentBuilder;
+import in.harmanpreet.learn.reddit.util.MailContentBuilder;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.MailException;
@@ -17,16 +18,16 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class MailService {
     private final JavaMailSender mailSender;
-    private final VerificationMailContentBuilder verificationMailContentBuilder;
+    private final MailContentBuilder verificationMailContentBuilder;
 
     @Async
-    void sendMail(NotificationEmail notificationEmail) {
+    void sendMail(MailTemplate mailTemplate, NotificationEmail notificationEmail) {
         MimeMessagePreparator messagePreparator = mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setFrom("support@devteam.com");
             messageHelper.setTo(notificationEmail.getRecipient());
             messageHelper.setSubject(notificationEmail.getSubject());
-            messageHelper.setText(verificationMailContentBuilder.build(notificationEmail.getBody()));
+            messageHelper.setText(verificationMailContentBuilder.build(mailTemplate, notificationEmail.getBody()));
         };
 
         try {

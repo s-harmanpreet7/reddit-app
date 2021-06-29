@@ -4,6 +4,7 @@ import in.harmanpreet.learn.reddit.constants.EmailTexts;
 import in.harmanpreet.learn.reddit.dto.AuthenticationResponse;
 import in.harmanpreet.learn.reddit.dto.LoginRequest;
 import in.harmanpreet.learn.reddit.dto.RegisterRequest;
+import in.harmanpreet.learn.reddit.enums.MailTemplate;
 import in.harmanpreet.learn.reddit.exception.RedditException;
 import in.harmanpreet.learn.reddit.model.NotificationEmail;
 import in.harmanpreet.learn.reddit.model.User;
@@ -48,9 +49,8 @@ public class AuthService {
         userRepository.save(user);
 
         String token = generateVerificationToken(user);
-        mailService.sendMail(new NotificationEmail(
-                "Please activate your account",
-                user.getEmail(),
+        mailService.sendMail(MailTemplate.ACCOUNT_VERIFICATION,
+                new NotificationEmail("Please activate your account", user.getEmail(),
                 EmailTexts.ACTIVATION_EMAIL_BODY + token));
     }
 
