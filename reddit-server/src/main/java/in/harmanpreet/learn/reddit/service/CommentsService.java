@@ -15,6 +15,9 @@ import in.harmanpreet.learn.reddit.util.MailContentBuilder;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @AllArgsConstructor
 public class CommentsService {
@@ -44,5 +47,14 @@ public class CommentsService {
     private void sendCommentNotification(String message, User user) {
         mailService.sendMail(MailTemplate.COMMENT_NOTIFICATION,
                 new NotificationEmail(user.getUsername() + " commented on your post", user.getEmail(), message));
+    }
+
+    public List<CommentsDto> getAllCommentsForPost(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException(postId.toString()));
+
+        return commentRepository.findByPost(post).stream()
+                .map(commentMapper::mapToDto)
+                .collect(Collectors.toList());
     }
 }
