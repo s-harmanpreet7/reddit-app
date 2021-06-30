@@ -13,6 +13,7 @@ import in.harmanpreet.learn.reddit.repository.PostRepository;
 import in.harmanpreet.learn.reddit.repository.UserRepository;
 import in.harmanpreet.learn.reddit.util.MailContentBuilder;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -54,6 +55,14 @@ public class CommentsService {
                 .orElseThrow(() -> new PostNotFoundException(postId.toString()));
 
         return commentRepository.findByPost(post).stream()
+                .map(commentMapper::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<CommentsDto> getALlCommentsForUser(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username));
+        return commentRepository.findAllByUser(user).stream()
                 .map(commentMapper::mapToDto)
                 .collect(Collectors.toList());
     }

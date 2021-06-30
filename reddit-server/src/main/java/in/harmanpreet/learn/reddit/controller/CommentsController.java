@@ -29,4 +29,11 @@ public class CommentsController {
                 .body(commentsService.getAllCommentsForPost(postId));
     }
 
+    @GetMapping("/users/{username}")
+    public ResponseEntity<List<CommentsDto>> getAllCommentsForUser(@PathVariable String username) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(commentsService.getALlCommentsForUser(username));
+    }
+
 }
